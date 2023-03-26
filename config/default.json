@@ -1,0 +1,6 @@
+{
+  "db": {
+    "port": 3306,
+    "database": "template_db"
+  }
+}
