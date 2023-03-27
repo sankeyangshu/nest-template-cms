@@ -1,0 +1,7 @@
+# 开发环境配置文件
+
+# 数据库配置
+db:
+  host: 'localhost' # 域名
+  user: 'root' # 用户名
+  password: 'root' # 密码
