@@ -1,3 +1,8 @@
+# 启动本地服务配置
+server:
+  port: 3000
+  origin: localhost
+
 # 数据库配置
 db:
   type: 'mysql'
