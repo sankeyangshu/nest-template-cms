@@ -45,7 +45,10 @@
     "config": "^3.3.9",
     "js-yaml": "^4.1.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rimraf": "^4.4.1",
+    "rxjs": "^7.2.0",
+    "winston": "^3.8.2",
+    "winston-daily-rotate-file": "^4.7.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.5.0",
