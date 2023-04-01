@@ -3,5 +3,6 @@
 # 数据库配置
 db:
   host: 'localhost' # 域名
-  user: 'root' # 用户名
-  password: 'root' # 密码
+  username: 'root' # 数据库用户名
+  password: 'root' # 数据库密码
+  synchronize: false # 同步本地的schema与数据库-初始化数据库的时候使用

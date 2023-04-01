@@ -5,9 +5,9 @@ server:
 
 # 数据库配置
 db:
-  type: 'mysql'
+  type: 'mysql' # 数据库类型
   port: 3306 # 端口号
-  database: 'template_db' # 数据库名
+  database: 'testdb' # 数据库名
 
 # swagger接口文档配置
 swagger:
