@@ -10,11 +10,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LoggerModule } from './logger/logger.module';
 import { TypeormModule } from '@/config/database/typeorm.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
     LoggerModule, // 日志模块
     TypeormModule, // 数据库模块
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
