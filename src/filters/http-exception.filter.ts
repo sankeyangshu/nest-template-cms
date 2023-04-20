@@ -3,7 +3,7 @@
  * @Author: 三棵杨树
  * @Date: 2023-04-19 21:01:45
  * @LastEditors: 三棵杨树
- * @LastEditTime: 2023-04-19 21:36:24
+ * @LastEditTime: 2023-04-20 10:13:41
  */
 import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus } from '@nestjs/common';
 import { Request, Response } from 'express';
@@ -12,13 +12,14 @@ import { AppLoggerService } from '@/logger/logger.service';
 // 全局异常过滤器处理
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
+  // 注入日志服务相关依赖
   constructor(private readonly appLoggerService: AppLoggerService) {}
 
   catch(exception: HttpException, host: ArgumentsHost) {
     this.appLoggerService.warn('进入全局异常过滤器', 'ExceptionResponse');
 
-    const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>(); // 获取响应请求对象
+    const ctx = host.switchToHttp(); // 获取当前执行上下文
+    const response = ctx.getResponse<Response>(); // 获取响应对象
     const request = ctx.getRequest<Request>(); // 获取请求对象
     const status =
       exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR; // 异常状态码
