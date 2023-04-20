@@ -3,7 +3,7 @@
  * @Author: 三棵杨树
  * @Date: 2023-04-19 21:01:45
  * @LastEditors: 三棵杨树
- * @LastEditTime: 2023-04-20 10:13:41
+ * @LastEditTime: 2023-04-20 11:05:58
  */
 import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus } from '@nestjs/common';
 import { Request, Response } from 'express';
@@ -28,7 +28,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const message =
       typeof errResBody === 'object'
         ? { message: (errResBody as any).message }
-        : { message: errResBody } || { message: exception.message } || { message: '服务器异常' }; // 错误信息
+        : { message: errResBody || exception.message || '服务器异常' }; // 错误信息
 
     const resBody = {
       code: status, // 系统错误状态
