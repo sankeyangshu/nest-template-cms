@@ -18,7 +18,7 @@ dependencies:
     version: 6.2.1(@nestjs/common@9.3.12)(@nestjs/core@9.3.12)(reflect-metadata@0.1.13)
   '@nestjs/typeorm':
     specifier: ^9.0.1
-    version: 9.0.1(@nestjs/common@9.3.12)(@nestjs/core@9.3.12)(reflect-metadata@0.1.13)(rxjs@7.8.0)(typeorm@0.3.12)
+    version: 9.0.1(@nestjs/common@9.3.12)(@nestjs/core@9.3.12)(reflect-metadata@0.1.13)(rxjs@7.8.0)(typeorm@0.3.15)
   config:
     specifier: ^3.3.9
     version: 3.3.9
@@ -41,8 +41,8 @@ dependencies:
     specifier: ^4.6.2
     version: 4.6.2(express@4.18.2)
   typeorm:
-    specifier: ^0.3.12
-    version: 0.3.12(mysql2@3.2.0)(ts-node@10.9.1)
+    specifier: ^0.3.15
+    version: 0.3.15(mysql2@3.2.0)(ts-node@10.9.1)
   winston:
     specifier: ^3.8.2
     version: 3.8.2
@@ -1274,7 +1274,7 @@ packages:
       tslib: 2.5.0
     dev: true
 
-  /@nestjs/typeorm@9.0.1(@nestjs/common@9.3.12)(@nestjs/core@9.3.12)(reflect-metadata@0.1.13)(rxjs@7.8.0)(typeorm@0.3.12):
+  /@nestjs/typeorm@9.0.1(@nestjs/common@9.3.12)(@nestjs/core@9.3.12)(reflect-metadata@0.1.13)(rxjs@7.8.0)(typeorm@0.3.15):
     resolution: {integrity: sha512-A2BgLIPsMtmMI0bPKEf4bmzgFPsnvHqNBx3KkvaJ7hJrBQy0OqYOb+Rr06ifblKWDWS2tUPNrAFQbZjtk3PI+g==}
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0
@@ -1287,7 +1287,7 @@ packages:
       '@nestjs/core': 9.3.12(@nestjs/common@9.3.12)(@nestjs/platform-express@9.3.12)(reflect-metadata@0.1.13)(rxjs@7.8.0)
       reflect-metadata: 0.1.13
       rxjs: 7.8.0
-      typeorm: 0.3.12(mysql2@3.2.0)(ts-node@10.9.1)
+      typeorm: 0.3.15(mysql2@3.2.0)(ts-node@10.9.1)
       uuid: 8.3.2
     dev: false
 
@@ -2613,11 +2613,6 @@ packages:
     resolution: {integrity: sha512-2iy1EkLdlBzQGvbweYRFxmFath8+K7+AKB0TlhHWkNuH+TmovaMH/Wp7V7R4u7f4SnX3OgLsU9t1NI9ioDnUpg==}
     engines: {node: '>=8'}
     dev: true
-
-  /date-fns@2.29.3:
-    resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
-    engines: {node: '>=0.11'}
-    dev: false
 
   /debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
@@ -5303,10 +5298,6 @@ packages:
   /safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  /sax@1.2.4:
-    resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
-    dev: false
-
   /schema-utils@3.1.1:
     resolution: {integrity: sha512-Y5PQxS4ITlC+EahLuXaY86TXfR7Dc5lw294alXOq86JAHCihAIZfqv8nNCWvaEJvaC51uN9hbLGeV0cFBdH+Fw==}
     engines: {node: '>= 10.13.0'}
@@ -6005,8 +5996,8 @@ packages:
   /typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
 
-  /typeorm@0.3.12(mysql2@3.2.0)(ts-node@10.9.1):
-    resolution: {integrity: sha512-sYSxBmCf1nJLLTcYtwqZ+lQIRtLPyUoO93rHTOKk9vJCyT4UfRtU7oRsJvfvKP3nnZTD1hzz2SEy2zwPEN6OyA==}
+  /typeorm@0.3.15(mysql2@3.2.0)(ts-node@10.9.1):
+    resolution: {integrity: sha512-R4JSw8QjDP1W+ypeRz/XrCXIqubrLSnNAzJAp9EQSQIPHTv+YmUHZis8g08lOwFpuhqL9m8jkPSz8GWEKlU/ow==}
     engines: {node: '>= 12.9.0'}
     hasBin: true
     peerDependencies:
@@ -6015,8 +6006,8 @@ packages:
       better-sqlite3: ^7.1.2 || ^8.0.0
       hdb-pool: ^0.1.6
       ioredis: ^5.0.4
-      mongodb: ^3.6.0
-      mssql: ^7.3.0
+      mongodb: ^5.2.0
+      mssql: ^9.1.1
       mysql2: ^2.2.5 || ^3.0.1
       oracledb: ^5.1.0
       pg: ^8.5.1
@@ -6068,11 +6059,9 @@ packages:
       buffer: 6.0.3
       chalk: 4.1.2
       cli-highlight: 2.1.11
-      date-fns: 2.29.3
       debug: 4.3.4
       dotenv: 16.0.3
       glob: 8.1.0
-      js-yaml: 4.1.0
       mkdirp: 2.1.6
       mysql2: 3.2.0
       reflect-metadata: 0.1.13
@@ -6080,7 +6069,6 @@ packages:
       ts-node: 10.9.1(@types/node@18.11.18)(typescript@4.9.5)
       tslib: 2.5.0
       uuid: 9.0.0
-      xml2js: 0.4.23
       yargs: 17.7.1
     transitivePeerDependencies:
       - supports-color
@@ -6328,19 +6316,6 @@ packages:
       imurmurhash: 0.1.4
       signal-exit: 3.0.7
     dev: true
-
-  /xml2js@0.4.23:
-    resolution: {integrity: sha512-ySPiMjM0+pLDftHgXY4By0uswI3SPKLDw/i3UXbnO8M/p28zqexCUoPmQFrYD+/1BzhGJSs2i1ERWKJAtiLrug==}
-    engines: {node: '>=4.0.0'}
-    dependencies:
-      sax: 1.2.4
-      xmlbuilder: 11.0.1
-    dev: false
-
-  /xmlbuilder@11.0.1:
-    resolution: {integrity: sha512-fDlsI/kFEx7gLvbecc0/ohLG50fugQp8ryHzMTuW9vSa1GJ0XYWKnhsUx7oie3G98+r56aTQIUB4kht42R3JvA==}
-    engines: {node: '>=4.0'}
-    dev: false
 
   /xtend@4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
