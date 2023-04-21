@@ -1,10 +1,3 @@
-/*
- * @Description: 工具类函数
- * @Author: 三棵杨树
- * @Date: 2023-04-01 16:49:53
- * @LastEditors: 三棵杨树
- * @LastEditTime: 2023-04-01 16:51:28
- */
 import * as path from 'path';
 
 /**

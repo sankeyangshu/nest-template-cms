@@ -1,9 +1,5 @@
-/*
- * @Description: swagger配置文件
- * @Author: 三棵杨树
- * @Date: 2023-03-30 20:36:47
- * @LastEditors: 三棵杨树
- * @LastEditTime: 2023-03-30 20:51:16
+/**
+ * swagger配置文件
  */
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';

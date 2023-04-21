@@ -1,10 +1,3 @@
-/*
- * @Description: 项目入口文件
- * @Author: 三棵杨树
- * @Date: 2023-03-26 16:04:40
- * @LastEditors: 三棵杨树
- * @LastEditTime: 2023-04-19 21:39:12
- */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { AppLoggerService } from './logger/logger.service';

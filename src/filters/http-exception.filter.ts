@@ -1,10 +1,3 @@
-/*
- * @Description: 全局http异常过滤器
- * @Author: 三棵杨树
- * @Date: 2023-04-19 21:01:45
- * @LastEditors: 三棵杨树
- * @LastEditTime: 2023-04-20 11:05:58
- */
 import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AppLoggerService } from '@/logger/logger.service';

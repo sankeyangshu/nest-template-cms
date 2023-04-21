@@ -1,10 +1,3 @@
-/*
- * @Description: 用户模块服务层
- * @Author: 三棵杨树
- * @Date: 2023-04-13 21:20:24
- * @LastEditors: 三棵杨树
- * @LastEditTime: 2023-04-13 21:33:01
- */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

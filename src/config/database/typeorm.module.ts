@@ -1,10 +1,3 @@
-/*
- * @Description: typeorm配置文件
- * @Author: 三棵杨树
- * @Date: 2023-04-01 15:03:37
- * @LastEditors: 三棵杨树
- * @LastEditTime: 2023-04-01 17:57:02
- */
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { resolve } from '@/utils';

@@ -1,10 +1,3 @@
-/*
- * @Description: 日志服务
- * @Author: 三棵杨树
- * @Date: 2023-03-29 20:32:13
- * @LastEditors: 三棵杨树
- * @LastEditTime: 2023-03-29 21:37:09
- */
 import { Injectable, LoggerService, Scope } from '@nestjs/common';
 import { createLogger, Logger, transports, format } from 'winston';
 import 'winston-daily-rotate-file';

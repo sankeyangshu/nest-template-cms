@@ -1,10 +1,3 @@
-/*
- * @Description: 用户模块控制器
- * @Author: 三棵杨树
- * @Date: 2023-04-13 21:31:24
- * @LastEditors: 三棵杨树
- * @LastEditTime: 2023-04-13 21:35:42
- */
 import { Controller, Get, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from '@/entities/user.entity';
