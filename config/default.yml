@@ -12,3 +12,7 @@ db:
 # swagger接口文档配置
 swagger:
   enable: true # 是否打开swagger接口文档
+
+# jwt配置
+jwt:
+  expiresIn: 3600
