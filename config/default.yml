@@ -15,4 +15,4 @@ swagger:
 
 # jwt配置
 jwt:
-  expiresIn: 3600
+  expiresIn: '4h'
