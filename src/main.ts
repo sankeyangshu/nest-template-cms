@@ -17,6 +17,9 @@ async function bootstrap() {
     cors: true, // 允许跨域
   });
 
+  // 设置所有 api 访问前缀
+  app.setGlobalPrefix('/api');
+
   // 设置swagger文档
   if (Config.get('swagger').enable) {
     setupSwagger(app);
