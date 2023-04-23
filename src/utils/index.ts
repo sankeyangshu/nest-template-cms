@@ -5,4 +5,4 @@ import * as path from 'path';
  * @param {string} dir 文件夹名
  * @return {string} 路径
  */
-export const resolve = (dir: string) => path.join(path.resolve(__dirname, '../../'), dir);
+export const resolve = (dir: string): string => path.join(path.resolve(__dirname, '../../'), dir);
