@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigEnum } from './enum/config.enum';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt.guard';
+import { RolesModule } from './modules/roles/roles.module';
 import AppConfig from './config';
 
 @Module({
@@ -22,6 +23,7 @@ import AppConfig from './config';
     }), // 数据库模块
     UserModule,
     AuthModule,
+    RolesModule,
   ],
   providers: [
     {
