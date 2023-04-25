@@ -10,16 +10,12 @@ export class AuthController {
   @Post('/signin')
   @NoAuth('ALL')
   async signin(@Body() dto: AuthUserDto) {
-    const { username, password } = dto;
-    const token = await this.authService.signin(username, password);
-    return {
-      token,
-    };
+    const userInfo = await this.authService.signin(dto);
+    return userInfo;
   }
 
   @Post('/signup')
   signup(@Body() dto: AuthUserDto) {
-    const { username, password } = dto;
-    return this.authService.signup(username, password);
+    return this.authService.signup(dto);
   }
 }
