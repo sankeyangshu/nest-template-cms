@@ -39,6 +39,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
       );
     }
 
-    response.status(status).json(resBody);
+    response.status(status >= 500 ? status : 200).json(resBody);
   }
 }
