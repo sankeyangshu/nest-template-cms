@@ -33,7 +33,7 @@ export class AuthService {
 
     // 生成token
     const userData = { ...res, password: '' };
-    const token = await this.jwtService.signAsync({ ...userData });
+    const token = await this.jwtService.signAsync(userData);
     return {
       ...userData,
       token,
