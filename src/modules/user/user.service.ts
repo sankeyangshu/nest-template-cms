@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '@/entities/user.entity';
 import { CreateUserDto } from './dto/createUser.dto';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
@@ -30,7 +31,16 @@ export class UserService {
 
     // 创建用户
     const userTemp = await this.userRepository.create(userDto);
-    return this.userRepository.save(userTemp);
+
+    /**
+     * 加密处理 - 异步方法
+     * bcrypt.hash(data, salt)
+     *    - data  要加密的数据
+     *    - slat  用于哈希密码的盐。如果指定为数字，则将使用指定的轮数生成盐并将其使用。推荐 10
+     */
+    userTemp.password = await bcrypt.hash(userTemp.password, 10);
+    const res = await this.userRepository.save(userTemp);
+    return res;
   }
 
   findAll() {

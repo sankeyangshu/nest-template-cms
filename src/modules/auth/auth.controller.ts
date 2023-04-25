@@ -15,6 +15,7 @@ export class AuthController {
   }
 
   @Post('/signup')
+  @NoAuth('ALL')
   signup(@Body() dto: AuthUserDto) {
     return this.authService.signup(dto);
   }

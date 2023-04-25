@@ -1,7 +1,8 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthUserDto } from './dto/auth.dto';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -21,12 +22,19 @@ export class AuthService {
     // 判断用户是否存在
     if (!res) {
       // 用户不存在
-      throw new BadRequestException('用户不存在');
+      throw new ForbiddenException('用户不存在，请注册');
     }
 
-    // TODO 判断用户密码是否正确
-    if (res && res.password !== password) {
-      throw new BadRequestException('密码错误');
+    /**
+     * 校验 - 使用异步方法
+     * bcrypt.compare(data, encrypted)
+     *    - data        要比较的数据, 使用登录时传递过来的密码
+     *    - encrypted   要比较的数据, 使用从数据库中查询出来的加密过的密码
+     */
+    const isPasswordValid = await bcrypt.compare(password, res.password);
+    // 判断用户密码是否正确
+    if (!isPasswordValid) {
+      throw new ForbiddenException('用户名或密码错误');
     }
 
     // TODO 判断用户是否处于禁用状态
@@ -35,7 +43,7 @@ export class AuthService {
     const userData = { ...res, password: '' };
     const token = await this.jwtService.signAsync(userData);
     return {
-      ...userData,
+      user: userData,
       token,
     };
   }
@@ -54,7 +62,7 @@ export class AuthService {
       throw new ForbiddenException('用户已存在');
     }
 
-    const res = this.userService.create({ username, password });
+    const res = await this.userService.create({ username, password });
     return res;
   }
 }
