@@ -5,6 +5,7 @@ db:
   host: 'localhost' # 主机，默认为localhost
   username: 'root' # 数据库用户名
   password: 'noderoot' # 数据库密码
+  autoLoadEntities: true # 自动链接被 forFeature 注册的实体
   synchronize: true # 同步本地的schema与数据库-初始化数据库的时候使用，生产环境建议关闭
   logging: false # 是否打印日志,执行sql语句时候输出原生sql,也可以配置成一个数组["query", "error", "schema"]指定sql的执行类型
 

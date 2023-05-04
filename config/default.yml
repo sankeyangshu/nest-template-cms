@@ -8,6 +8,7 @@ db:
   type: 'mysql' # 数据库类型
   port: 3306 # 端口号
   database: 'testdb' # 数据库名
+  timezone: '+08:00' # 服务器上配置的时区 - 东八时区
 
 # swagger接口文档配置
 swagger:
