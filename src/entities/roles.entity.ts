@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from './user.entity';
+import { Authority } from './authority.entity';
 
 @Entity()
 export class Roles {
@@ -36,4 +37,7 @@ export class Roles {
 
   @ManyToMany(() => User, (user) => user.roles)
   users: User;
+
+  @ManyToMany(() => Authority, (auths) => auths.roles)
+  auths: Authority;
 }
