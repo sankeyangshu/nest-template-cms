@@ -22,7 +22,13 @@ export class User {
   @Column({ comment: '密码', nullable: false })
   password: string;
 
-  @Column({ length: 45, default: null, unique: false, comment: '联系方式' })
+  @Column({ comment: '昵称', default: null, unique: false })
+  nickname: string;
+
+  @Column({ comment: '性别,男性为1,女性为2,位置为3', default: 1 })
+  sex: number;
+
+  @Column({ length: 45, default: null, unique: false, comment: '手机号' })
   contact: string;
 
   @Column({ length: 45, default: null, unique: false, comment: '邮箱' })
@@ -32,12 +38,15 @@ export class User {
     type: 'int',
     default: 1,
     unique: false,
-    comment: '用户类型：1管理员,2普通用户,3其他用户',
+    comment: '用户类型：0超级管理员,1管理员,2普通用户',
   })
   userType: number;
 
-  @Column({ type: 'int', default: 1, unique: false, comment: '用户状态：1是启用，其他是禁用' })
-  status: number;
+  @Column({ type: 'boolean', default: true, unique: false, comment: '用户状态' })
+  status: boolean;
+
+  @Column({ comment: '用户描述', nullable: true })
+  description: string;
 
   @CreateDateColumn({ comment: '创建时间' })
   createtime: string;

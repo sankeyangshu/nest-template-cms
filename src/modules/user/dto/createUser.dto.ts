@@ -1,4 +1,5 @@
 import {
+  IsBoolean,
   IsEmail,
   IsNotEmpty,
   IsNumber,
@@ -34,7 +35,7 @@ export class CreateUserDto {
   @IsOptional()
   userType: number;
 
-  @IsNumber()
+  @IsBoolean()
   @IsOptional()
-  status: number;
+  status: boolean;
 }
