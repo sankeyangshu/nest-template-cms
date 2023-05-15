@@ -25,7 +25,7 @@ export class User {
   @Column({ comment: '昵称', default: null, unique: false })
   nickname: string;
 
-  @Column({ comment: '性别,男性为1,女性为2,位置为3', default: 1 })
+  @Column({ comment: '性别,男性为1,女性为2,未知为3', default: 1 })
   sex: number;
 
   @Column({ length: 45, default: null, unique: false, comment: '手机号' })
