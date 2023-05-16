@@ -29,14 +29,14 @@ export class User {
   sex: number;
 
   @Column({ length: 45, default: null, unique: false, comment: '手机号' })
-  contact: string;
+  phone: string;
 
   @Column({ length: 45, default: null, unique: false, comment: '邮箱' })
   email: string;
 
   @Column({
     type: 'int',
-    default: 1,
+    default: 2,
     unique: false,
     comment: '用户类型：0超级管理员,1管理员,2普通用户',
   })

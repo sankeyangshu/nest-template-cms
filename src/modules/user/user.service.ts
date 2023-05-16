@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '@/entities/user.entity';
 import { CreateUserDto } from './dto/createUser.dto';
+import { GetUserDto } from './dto/getUser.dto';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
@@ -17,8 +18,11 @@ export class UserService {
    */
   async create(userDto: Partial<CreateUserDto>, userLogin?: User) {
     // 判断用户是否有权限创建新用户
-    if (userLogin?.userType !== 1 && userDto.userType === 1) {
-      // 登录用户不是管理员，无法创建管理员权限的用户
+    if (userLogin?.userType !== 0 && userLogin?.userType !== 1) {
+      // 登录用户既不是超级管理员，又不是管理员，无法创建任何用户
+      throw new UnauthorizedException('你没有权限创建该类型的用户');
+    } else if (userLogin?.userType !== 0 && userLogin?.userType >= userDto.userType) {
+      // 登录用户不是超级管理员，无法创建管理员权限的用户
       throw new UnauthorizedException('你没有权限创建该类型的用户');
     }
 
@@ -43,8 +47,23 @@ export class UserService {
     return res;
   }
 
-  findAll() {
-    return this.userRepository.find();
+  /**
+   * @description: 查询用户列表
+   * @param {GetUserDto} query 查询参数
+   * @return 用户列表信息
+   */
+  findAll(query: GetUserDto) {
+    // page - 页码，limit - 每页条数，condition-查询条件(username, role, sex)，sort-排序
+    const { page, limit, username } = query;
+    const take = limit || 10; // 条数
+    const skip = ((page || 1) - 1) * take; // 页码 - 要跳过多少条
+    return this.userRepository.find({
+      take,
+      skip,
+      where: {
+        username,
+      },
+    });
   }
 
   /**

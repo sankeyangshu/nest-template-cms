@@ -24,18 +24,30 @@ export class CreateUserDto {
   @IsNotEmpty({ message: '密码不能为空' })
   password: string;
 
+  @IsString()
   @IsOptional()
-  contact: string;
+  nickname: string;
+
+  @IsNumber()
+  @IsOptional()
+  sex: number;
+
+  @IsOptional()
+  phone: string;
 
   @IsEmail()
   @IsOptional()
   email: string;
 
   @IsNumber()
-  @IsOptional()
+  @IsNotEmpty({ message: '用户类型不能为空' })
   userType: number;
 
   @IsBoolean()
   @IsOptional()
   status: boolean;
+
+  @IsString()
+  @IsOptional()
+  description: string;
 }

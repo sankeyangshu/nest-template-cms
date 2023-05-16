@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, ParseIntPipe, Post, Query, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/createUser.dto';
+import { GetUserDto } from './dto/getUser.dto';
 import { Request } from 'express';
 import { User } from '@/entities/user.entity';
 
@@ -9,13 +10,13 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get('getAll')
-  getUsers() {
-    return this.userService.findAll();
+  getUsers(@Query() query: GetUserDto) {
+    return this.userService.findAll(query);
   }
 
   @Post('create')
-  addUser(@Body() userDto: CreateUserDto) {
-    return this.userService.create(userDto);
+  addUser(@Body() userDto: CreateUserDto, @Req() req: Request) {
+    return this.userService.create(userDto, req['user'] as User);
   }
 
   @Delete('delete')
