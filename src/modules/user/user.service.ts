@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '@/entities/user.entity';
@@ -27,7 +32,7 @@ export class UserService {
     }
 
     // 判断要创建的用户账户是否存在
-    const createUser = await this.find(userDto.username);
+    const createUser = await this.find({ username: userDto.username });
     if (createUser) {
       // 用户账户存在
       throw new BadRequestException('用户已存在');
@@ -69,10 +74,11 @@ export class UserService {
   /**
    * @description: 获取用户信息
    * @param {string} username 用户名
+   * @param {number} id 用户ID
    * @return 用户信息
    */
-  find(username: string) {
-    return this.userRepository.findOne({ where: { username } });
+  find({ username, id }: { username?: string; id?: number }) {
+    return this.userRepository.findOne({ where: { username, id } });
   }
 
   async update(id: number, user: Partial<User>) {
@@ -82,9 +88,23 @@ export class UserService {
   /**
    * @description: 删除用户
    * @param {number} id 要删除的用户id
+   * @param {User} userLogin 登录用户信息
    * @return 删除结果
    */
-  remove(id: number) {
+  async remove(id: number, userLogin: User) {
+    // 判断要删除的用户是否存在
+    const user = await this.find({ id });
+    if (!user) {
+      // 用户不存在
+      throw new ForbiddenException('用户不存在，无法删除');
+    }
+    // 判断用户是否有权限删除用户
+    if (userLogin.userType !== 0 && userLogin.userType !== 1) {
+      // 登录用户既不是超级管理员，又不是管理员，无法删除任何用户
+      throw new UnauthorizedException('你没有权限删除该类型的用户');
+    } else if (userLogin.userType !== 0 && userLogin.userType >= user.userType) {
+      throw new UnauthorizedException('你没有权限删除该类型的用户');
+    }
     return this.userRepository.delete(id);
   }
 }

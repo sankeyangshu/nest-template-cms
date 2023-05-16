@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthUserDto } from './dto/auth.dto';
@@ -17,7 +17,7 @@ export class AuthService {
     const { username, password } = dto;
 
     // 获取登录用户的信息
-    const res = await this.userService.find(username);
+    const res = await this.userService.find({ username });
 
     // 判断用户是否存在
     if (!res) {
@@ -37,7 +37,10 @@ export class AuthService {
       throw new ForbiddenException('用户名或密码错误');
     }
 
-    // TODO 判断用户是否处于禁用状态
+    // 判断用户是否处于禁用状态
+    if (!res.status) {
+      throw new UnauthorizedException('您的账户已被禁用，暂时无法登录');
+    }
 
     // 生成token
     const userData = { ...res, password: '' };
@@ -55,7 +58,7 @@ export class AuthService {
    */
   async signup(dto: AuthUserDto) {
     const { username, password } = dto;
-    const user = await this.userService.find(username);
+    const user = await this.userService.find({ username });
 
     // 判断用户名是否已经存在
     if (user) {
