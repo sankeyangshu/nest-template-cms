@@ -10,19 +10,19 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class CreateUserDto {
+export class UpdateUserDto {
   @IsNumber()
-  @IsOptional()
+  @IsNotEmpty({ message: '用户id不能为空' })
   id: number;
 
   @IsString()
   @MinLength(4, { message: '用户名至少需要四位' })
-  @IsNotEmpty({ message: '用户名不能为空' })
+  @IsOptional()
   username: string;
 
   @IsString()
   @Length(4, 16, { message: '密码长度4-16位' })
-  @IsNotEmpty({ message: '密码不能为空' })
+  @IsOptional()
   password: string;
 
   @IsString()
@@ -44,7 +44,7 @@ export class CreateUserDto {
 
   @IsIn([0, 1, 2], { message: '用户类型不合法' })
   @IsNumber()
-  @IsNotEmpty({ message: '用户类型不能为空' })
+  @IsOptional()
   userType: number;
 
   @IsBoolean()

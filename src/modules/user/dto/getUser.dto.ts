@@ -3,11 +3,11 @@ import { IsNumber, IsOptional, IsString } from 'class-validator';
 export class GetUserDto {
   @IsNumber()
   @IsOptional()
-  page: number;
+  pageNum: number;
 
   @IsNumber()
   @IsOptional()
-  limit: number;
+  pageSize: number;
 
   @IsString()
   @IsOptional()

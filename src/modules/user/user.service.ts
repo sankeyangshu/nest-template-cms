@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { User } from '@/entities/user.entity';
 import { CreateUserDto } from './dto/createUser.dto';
 import { GetUserDto } from './dto/getUser.dto';
+import { conditionUtils } from '@/utils/db.helper';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
@@ -57,32 +58,76 @@ export class UserService {
    * @param {GetUserDto} query 查询参数
    * @return 用户列表信息
    */
-  findAll(query: GetUserDto) {
+  async findAll(query: GetUserDto) {
     // page - 页码，limit - 每页条数，condition-查询条件(username, role, sex)，sort-排序
-    const { page, limit, username } = query;
-    const take = limit || 10; // 条数
-    const skip = ((page || 1) - 1) * take; // 页码 - 要跳过多少条
-    return this.userRepository.find({
-      take,
-      skip,
-      where: {
-        username,
-      },
-    });
+    const { pageNum = 1, pageSize = 10, username } = query;
+    const take = pageSize; // 条数
+    const skip = (pageNum - 1) * take; // 页码 - 要跳过多少条
+
+    // 查询参数
+    const obj = {
+      'user.username': username,
+    };
+
+    const queryBuilder = this.userRepository.createQueryBuilder('user');
+    const newQueryBuilder = conditionUtils<User>(queryBuilder, obj);
+
+    // return this.userRepository.find({
+    //   take,
+    //   skip,
+    //   where: {
+    //     username,
+    //   },
+    // });
+
+    const [list, total] = await newQueryBuilder.take(take).skip(skip).getManyAndCount();
+
+    return {
+      list,
+      total,
+      pageNum,
+      pageSize,
+    };
   }
 
   /**
    * @description: 获取用户信息
-   * @param {string} username 用户名
-   * @param {number} id 用户ID
+   * @param {string} option.username 用户名
+   * @param {number} option.id 用户ID
    * @return 用户信息
    */
   find({ username, id }: { username?: string; id?: number }) {
     return this.userRepository.findOne({ where: { username, id } });
   }
 
-  async update(id: number, user: Partial<User>) {
-    return this.userRepository.update(id, user);
+  /**
+   * @description: 更新用户信息
+   * @param {User} updateUserDto 要更新的用户数据
+   * @param {User} userLogin 登录用户数据
+   * @return 更新结果
+   */
+  async update(updateUserDto: Partial<User>, userLogin: User) {
+    // 获取要更新的用户id
+    const id = updateUserDto.id;
+
+    // 查询对应的用户信息
+    const userTemp = await this.find({ id });
+    if (!userTemp) {
+      throw new ForbiddenException('用户不存在，无法更新');
+    }
+
+    // 判断用户是否有权限更新用户信息
+    if (userLogin.userType !== 0 && userLogin.userType !== 1) {
+      // 登录用户既不是超级管理员，又不是管理员，无法更新用户信息
+      throw new UnauthorizedException('你没有权限更新该用户的信息');
+    } else if (userLogin.userType !== 0 && userLogin.userType >= userTemp.userType) {
+      throw new UnauthorizedException('你没有权限更新该用户的信息');
+    }
+
+    // 联合模型更新，需要使用save方法或者queryBuilder
+    const newUserTemp = this.userRepository.merge(userTemp, updateUserDto);
+
+    return this.userRepository.save(newUserTemp);
   }
 
   /**
@@ -105,6 +150,11 @@ export class UserService {
     } else if (userLogin.userType !== 0 && userLogin.userType >= user.userType) {
       throw new UnauthorizedException('你没有权限删除该类型的用户');
     }
-    return this.userRepository.delete(id);
+
+    // 删除用户
+    const { affected } = await this.userRepository.delete(id);
+
+    // affected 删除的行数
+    return affected > 0;
   }
 }
