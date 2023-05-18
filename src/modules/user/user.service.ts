@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '@/entities/user.entity';
@@ -26,10 +21,10 @@ export class UserService {
     // 判断用户是否有权限创建新用户
     if (userLogin?.userType !== 0 && userLogin?.userType !== 1) {
       // 登录用户既不是超级管理员，又不是管理员，无法创建任何用户
-      throw new UnauthorizedException('你没有权限创建该类型的用户');
+      throw new ForbiddenException('你没有权限创建该类型的用户');
     } else if (userLogin?.userType !== 0 && userLogin?.userType >= userDto.userType) {
       // 登录用户不是超级管理员，无法创建管理员权限的用户
-      throw new UnauthorizedException('你没有权限创建该类型的用户');
+      throw new ForbiddenException('你没有权限创建该类型的用户');
     }
 
     // 判断要创建的用户账户是否存在
@@ -119,9 +114,9 @@ export class UserService {
     // 判断用户是否有权限更新用户信息
     if (userLogin.userType !== 0 && userLogin.userType !== 1) {
       // 登录用户既不是超级管理员，又不是管理员，无法更新用户信息
-      throw new UnauthorizedException('你没有权限更新该用户的信息');
+      throw new ForbiddenException('你没有权限更新该用户的信息');
     } else if (userLogin.userType !== 0 && userLogin.userType >= userTemp.userType) {
-      throw new UnauthorizedException('你没有权限更新该用户的信息');
+      throw new ForbiddenException('你没有权限更新该用户的信息');
     }
 
     // 联合模型更新，需要使用save方法或者queryBuilder
@@ -146,9 +141,9 @@ export class UserService {
     // 判断用户是否有权限删除用户
     if (userLogin.userType !== 0 && userLogin.userType !== 1) {
       // 登录用户既不是超级管理员，又不是管理员，无法删除任何用户
-      throw new UnauthorizedException('你没有权限删除该类型的用户');
+      throw new ForbiddenException('你没有权限删除该类型的用户');
     } else if (userLogin.userType !== 0 && userLogin.userType >= user.userType) {
-      throw new UnauthorizedException('你没有权限删除该类型的用户');
+      throw new ForbiddenException('你没有权限删除该类型的用户');
     }
 
     // 删除用户
