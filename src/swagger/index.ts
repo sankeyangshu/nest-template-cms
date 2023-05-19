@@ -13,7 +13,7 @@ export const setupSwagger = (app: NestExpressApplication) => {
     .setTitle('后台管理系统')
     .setDescription('nest-tmplate-cms 接口文档')
     .setVersion('v0.0.1')
-    .addTag('beta')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api/swagger', app, document);
