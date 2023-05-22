@@ -1,33 +1,36 @@
-import { Controller, Get, Post, Body, Patch, Delete, Query } from '@nestjs/common';
+import { Controller, Post, Body, Patch, Delete, Query, ParseIntPipe, Req } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { RolesDto } from './dto/roles.dto';
+import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
+import { User } from '@/entities/user.entity';
 
 @Controller('roles')
+@ApiBearerAuth()
+@ApiTags('角色模块')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
   @Post('create')
-  create(@Body() createRoleDto: RolesDto) {
-    return this.rolesService.create(createRoleDto);
+  createRole(@Body() createRoleDto: RolesDto, @Req() req: Request) {
+    const user = req['user'] as User;
+    return this.rolesService.create(createRoleDto, user);
   }
 
-  @Get('getAll')
-  findAll() {
+  @Post('getAll')
+  getRoles() {
     return this.rolesService.findAll();
   }
 
-  @Get('get')
-  findOne(@Query('id') id: number) {
-    return this.rolesService.findOne(id);
-  }
-
   @Patch('update')
-  update(@Body() updateRoleDto: RolesDto) {
+  updateRole(@Body() updateRoleDto: RolesDto) {
     return this.rolesService.update(updateRoleDto);
   }
 
   @Delete('delete')
-  remove(@Query('id') id: number) {
+  @ApiQuery({ name: 'id', description: '要删除的角色的id', required: true, type: 'number' })
+  @ApiOperation({ summary: '删除角色' })
+  removeRole(@Query('id', ParseIntPipe) id: number) {
     return this.rolesService.remove(id);
   }
 }

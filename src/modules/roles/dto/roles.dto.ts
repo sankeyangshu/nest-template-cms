@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class RolesDto {
   @IsNumber()
@@ -16,9 +16,9 @@ export class RolesDto {
   @IsOptional()
   roleType: number;
 
-  @IsNumber()
+  @IsBoolean()
   @IsOptional()
-  status: number;
+  status: boolean;
 
   @IsNumber()
   @IsOptional()

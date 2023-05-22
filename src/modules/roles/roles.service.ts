@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Roles } from '@/entities/roles.entity';
+import { User } from '@/entities/user.entity';
 import { RolesDto } from './dto/roles.dto';
 
 @Injectable()
@@ -11,9 +12,21 @@ export class RolesService {
   /**
    * @description: 创建新角色
    * @param {RolesDto} createRolesDto 角色信息
+   * @param {User} userLogin 登录用户信息
    * @return 创建结果
    */
-  async create(createRolesDto: RolesDto) {
+  async create(createRolesDto: RolesDto, userLogin: User) {
+    // 判断用户是否有权限创建新角色
+    if (userLogin.userType !== 0) {
+      // 登录用户不是超级管理员，无法创建任何角色
+      throw new ForbiddenException('你没有权限创建角色');
+    }
+
+    // 判断要创建的角色是否存在
+    // const createRole = await this.findOne()
+    // if () {
+
+    // }
     const roles = await this.rolesRepository.create(createRolesDto);
     return this.rolesRepository.save(roles);
   }
