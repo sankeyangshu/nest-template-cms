@@ -35,7 +35,19 @@
   },
   "homepage": "https://github.com/sankeyangshu/nest-template-cms#readme",
   "lint-staged": {
-    "*.{js,ts}": "eslint --fix"
+    "*.{js,ts}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "{!(package)*.json,*.code-snippets,.!(browserslist)*rc}": [
+      "prettier --write--parser json"
+    ],
+    "package.json": [
+      "prettier --write"
+    ],
+    "*.md": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
