@@ -9,7 +9,7 @@ import {
 import { Roles } from './roles.entity';
 
 @Entity()
-export class Authority {
+export class Resources {
   @PrimaryGeneratedColumn({ comment: '资源id' })
   id: number;
 

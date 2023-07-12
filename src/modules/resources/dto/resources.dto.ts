@@ -1,6 +1,6 @@
 import { IsIn, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class AuthorityDto {
+export class ResourcesDto {
   @IsNumber()
   @IsOptional()
   id: number;
