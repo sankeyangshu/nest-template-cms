@@ -33,6 +33,11 @@
 - [TypeScript](https://www.typescriptlang.org/) - 熟悉 `TypeScript` 基本语法
 - [Es6+](http://es6.ruanyifeng.com/) - 熟悉 `ES6` 基本语法
 
+## 配套资源
+
+- [vue-template-admin](https://github.com/sankeyangshu/vue-template-admin) - 使用 Vue3 + TS 构建的后台管理系统
+- [react-template-admin](https://github.com/sankeyangshu/react-template-admin) - 使用 React + TS 构建的后台管理系统
+
 ## 环境准备
 
 本地环境需要安装 [pnpm7.x](https://www.pnpm.cn/)、[Node.js](http://nodejs.org/) 和 [Git](https://git-scm.com/)
