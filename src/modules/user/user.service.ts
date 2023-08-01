@@ -1,15 +1,20 @@
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { User } from '@/entities/user.entity';
+import { Roles } from '@/entities/roles.entity';
 import { CreateUserDto } from './dto/createUser.dto';
 import { GetUserDto } from './dto/getUser.dto';
+import { UpdateUserDto } from './dto/updateUser.dto';
 import { conditionUtils } from '@/utils/db.helper';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(Roles) private readonly rolesRepository: Repository<Roles>
+  ) {}
 
   /**
    * @description: 创建用户
@@ -36,6 +41,13 @@ export class UserService {
 
     // 创建用户
     const userTemp = await this.userRepository.create(userDto);
+
+    // 判断用户角色是否存在
+    if (userDto.roleIds) {
+      userTemp.roles = await this.rolesRepository.findBy({
+        id: In(userDto.roleIds.split(',')),
+      });
+    }
 
     /**
      * 加密处理 - 异步方法
@@ -97,11 +109,11 @@ export class UserService {
 
   /**
    * @description: 更新用户信息
-   * @param {User} updateUserDto 要更新的用户数据
+   * @param {UpdateUserDto} updateUserDto 要更新的用户数据
    * @param {User} userLogin 登录用户数据
    * @return 更新结果
    */
-  async update(updateUserDto: Partial<User>, userLogin: User) {
+  async update(updateUserDto: Partial<UpdateUserDto>, userLogin: User) {
     // 获取要更新的用户id
     const id = updateUserDto.id;
 
@@ -117,6 +129,13 @@ export class UserService {
       throw new ForbiddenException('你没有权限更新该用户的信息');
     } else if (userLogin.userType !== 0 && userLogin.userType >= userTemp.userType) {
       throw new ForbiddenException('你没有权限更新该用户的信息');
+    }
+
+    // 判断用户角色是否存在
+    if (updateUserDto.roleIds) {
+      userTemp.roles = await this.rolesRepository.findBy({
+        id: In(updateUserDto.roleIds.split(',')),
+      });
     }
 
     // 联合模型更新，需要使用save方法或者queryBuilder
@@ -150,6 +169,10 @@ export class UserService {
     const { affected } = await this.userRepository.delete(id);
 
     // affected 删除的行数
-    return affected > 0;
+    if (affected > 0) {
+      return 'success';
+    } else {
+      throw new ForbiddenException('删除失败，该用户不存在或者无法删除');
+    }
   }
 }

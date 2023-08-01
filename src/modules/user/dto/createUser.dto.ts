@@ -65,4 +65,9 @@ export class CreateUserDto {
   @IsString()
   @IsOptional()
   description: string;
+
+  @ApiProperty({ description: '用户角色' })
+  @IsString()
+  @IsOptional()
+  roleIds: string;
 }
