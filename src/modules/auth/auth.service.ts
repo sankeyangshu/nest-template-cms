@@ -6,7 +6,10 @@ import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService, private jwtService: JwtService) {}
+  constructor(
+    private userService: UserService,
+    private jwtService: JwtService
+  ) {}
 
   /**
    * @description: 用户登录
