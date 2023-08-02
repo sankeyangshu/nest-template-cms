@@ -1,9 +1,10 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Roles } from '@/entities/roles.entity';
 import { User } from '@/entities/user.entity';
 import { RolesDto } from './dto/roles.dto';
+import { GetRolesListDto } from './dto/getRolesList.dto';
 
 @Injectable()
 export class RolesService {
@@ -23,20 +24,37 @@ export class RolesService {
     }
 
     // 判断要创建的角色是否存在
-    // const createRole = await this.findOne()
-    // if () {
+    const createRole = await this.rolesRepository.findOne({
+      where: {
+        roleName: createRolesDto.roleName,
+      },
+    });
+    if (createRole) {
+      // 角色存在
+      throw new BadRequestException('角色已存在');
+    }
 
-    // }
     const roles = await this.rolesRepository.create(createRolesDto);
     return this.rolesRepository.save(roles);
   }
 
   /**
    * @description: 查询全部角色
+   * @param {GetRolesListDto} query 查询参数
    * @return 全部角色列表
    */
-  findAll() {
-    return this.rolesRepository.find();
+  async findAll(query: GetRolesListDto) {
+    // page - 页码，limit - 每页条数，condition-查询条件(username, role, sex)，sort-排序
+    const { pageNum = 1, pageSize = 10 } = query;
+    const take = pageSize; // 条数
+    const skip = (pageNum - 1) * take; // 页码 - 要跳过多少条
+
+    const queryBuilder = this.rolesRepository.createQueryBuilder('roles');
+
+    // 获取查询结果
+    const [list, total] = await queryBuilder.take(take).skip(skip).getManyAndCount();
+
+    return { list, total, pageNum, pageSize };
   }
 
   /**
@@ -62,6 +80,12 @@ export class RolesService {
     const id = updateRoleDto.id;
     // 查询对应id的角色信息
     const role = await this.findOne(id);
+
+    // 角色不存在
+    if (!role) {
+      throw new BadRequestException('角色不存在');
+    }
+
     const newRole = this.rolesRepository.merge(role, updateRoleDto);
     return this.rolesRepository.save(newRole);
   }
@@ -69,9 +93,31 @@ export class RolesService {
   /**
    * @description: 删除角色
    * @param {number} id 角色ID
+   * @param {User} userLogin 登录用户信息
    * @return 删除结果
    */
-  remove(id: number) {
-    return this.rolesRepository.delete(id);
+  async remove(id: number, userLogin: User) {
+    // 判断要删除的角色是否存在
+    const role = await this.findOne(id);
+    if (!role) {
+      // 角色不存在
+      throw new ForbiddenException('角色不存在，无法删除');
+    }
+
+    // 判断用户是否有权限删除角色
+    if (userLogin.userType !== 0) {
+      // 登录用户不是超级管理员，无法删除角色
+      throw new ForbiddenException('你没有权限删除角色');
+    }
+
+    // 删除角色
+    const { affected } = await this.rolesRepository.delete(id);
+
+    // affected 删除的行数
+    if (affected > 0) {
+      return 'success';
+    } else {
+      throw new ForbiddenException('删除失败，该角色不存在或者无法删除');
+    }
   }
 }

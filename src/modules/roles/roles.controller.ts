@@ -1,7 +1,8 @@
 import { Controller, Post, Body, Patch, Delete, Query, ParseIntPipe, Req } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { RolesDto } from './dto/roles.dto';
-import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { GetRolesListDto } from './dto/getRolesList.dto';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { User } from '@/entities/user.entity';
 
@@ -12,17 +13,26 @@ export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
   @Post('create')
+  @ApiBody({ type: RolesDto })
+  @ApiOperation({ summary: '创建角色' })
   createRole(@Body() createRoleDto: RolesDto, @Req() req: Request) {
     const user = req['user'] as User;
     return this.rolesService.create(createRoleDto, user);
   }
 
   @Post('getAll')
-  getRoles() {
-    return this.rolesService.findAll();
+  @ApiOperation({ summary: '获取所有角色信息' })
+  getRoles(@Query() query: GetRolesListDto) {
+    // 判断是查询单个角色还是查询全部角色
+    if (query.id) {
+      return this.rolesService.findOne(query.id);
+    }
+    return this.rolesService.findAll(query);
   }
 
   @Patch('update')
+  @ApiBody({ type: RolesDto })
+  @ApiOperation({ summary: '更新角色信息' })
   updateRole(@Body() updateRoleDto: RolesDto) {
     return this.rolesService.update(updateRoleDto);
   }
@@ -30,7 +40,8 @@ export class RolesController {
   @Delete('delete')
   @ApiQuery({ name: 'id', description: '要删除的角色的id', required: true, type: 'number' })
   @ApiOperation({ summary: '删除角色' })
-  removeRole(@Query('id', ParseIntPipe) id: number) {
-    return this.rolesService.remove(id);
+  removeRole(@Query('id', ParseIntPipe) id: number, @Req() req: Request) {
+    const user = req['user'] as User;
+    return this.rolesService.remove(id, user);
   }
 }
