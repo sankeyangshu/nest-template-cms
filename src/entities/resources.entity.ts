@@ -32,8 +32,8 @@ export class Resources {
   @Column({ comment: '上级id' })
   pid: number;
 
-  @Column({ type: 'int', default: 1, unique: false, comment: '状态：1是启用，其他是禁用' })
-  status: number;
+  @Column({ type: 'boolean', default: true, unique: false, comment: '资源状态' })
+  status: boolean;
 
   @Column({ type: 'int', default: 10, unique: false, comment: '排序' })
   sort: number;

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Resources } from '@/entities/resources.entity';
 import { Repository } from 'typeorm';
@@ -25,7 +25,7 @@ export class ResourcesService {
    * @return 全部资源列表
    */
   findAll() {
-    return this.resourcesRepository.find();
+    return this.resourcesRepository.find({ order: { sort: 'ASC' } });
   }
 
   /**
@@ -49,6 +49,12 @@ export class ResourcesService {
     const id = updateResourcesDto.id;
     // 查询对应的资源信息
     const resources = await this.findOne(id);
+
+    // 判断资源是否存在
+    if (!resources) {
+      throw new BadRequestException('资源不存在');
+    }
+
     const newResources = this.resourcesRepository.merge(resources, updateResourcesDto);
     return this.resourcesRepository.save(newResources);
   }
@@ -56,9 +62,30 @@ export class ResourcesService {
   /**
    * @description: 删除资源
    * @param {number} id 资源id
+   * @param {number} authType 资源类型
    * @return 删除结果
    */
-  remove(id: number) {
-    return this.resourcesRepository.delete(id);
+  async remove(id: number, authType: number) {
+    const res = await this.resourcesRepository.find({
+      where: [
+        { id, authType },
+        { pid: id, authType },
+      ],
+    });
+    // 判断资源是否存在
+    if (res.length < 1) {
+      throw new BadRequestException('删除失败，该资源不存在');
+    }
+    if (res.length > 1 && authType === 1) {
+      throw new BadRequestException('删除失败，该菜单存在子菜单');
+    }
+    // 删除资源
+    const { affected } = await this.resourcesRepository.delete(id);
+    // affected 删除的行数
+    if (affected > 0) {
+      return 'success';
+    } else {
+      throw new BadRequestException('删除失败，该资源不存在或者无法删除');
+    }
   }
 }
