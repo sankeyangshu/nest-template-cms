@@ -30,10 +30,10 @@ export class Roles {
   sort: number;
 
   @CreateDateColumn({ comment: '创建时间' })
-  createTime: string;
+  createtime: string;
 
   @UpdateDateColumn({ comment: '更新时间' }) // 自动生成并自动更新列
-  updateTime: string;
+  updatetime: string;
 
   @ManyToMany(() => User, (user) => user.roles)
   users: User;
