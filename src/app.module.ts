@@ -9,6 +9,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt.guard';
 import { RolesModule } from './modules/roles/roles.module';
 import { ResourcesModule } from './modules/resources/resources.module';
+import { LoggersModule } from './modules/loggers/loggers.module';
 import AppConfig from './config';
 
 @Module({
@@ -26,6 +27,7 @@ import AppConfig from './config';
     AuthModule,
     RolesModule,
     ResourcesModule,
+    LoggersModule,
   ],
   providers: [
     {
