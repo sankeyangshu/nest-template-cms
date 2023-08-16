@@ -7,9 +7,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigEnum } from './enum/config.enum';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt.guard';
+import { PermissionGuard } from './guards/permission.guard';
 import { RolesModule } from './modules/roles/roles.module';
 import { ResourcesModule } from './modules/resources/resources.module';
 import { LoggersModule } from './modules/loggers/loggers.module';
+import { PermissionModule } from './modules/permission/permission.module';
 import AppConfig from './config';
 
 @Module({
@@ -28,11 +30,16 @@ import AppConfig from './config';
     RolesModule,
     ResourcesModule,
     LoggersModule,
+    PermissionModule,
   ],
   providers: [
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermissionGuard,
     },
   ],
 })

@@ -40,12 +40,12 @@ export class UserService {
     }
 
     // 创建用户
-    const userTemp = await this.userRepository.create(userDto);
+    const userTemp = this.userRepository.create(userDto);
 
     // 判断用户角色是否存在
     if (userDto.roleIds) {
       userTemp.roles = await this.rolesRepository.findBy({
-        id: In(userDto.roleIds.split(',')),
+        id: In(userDto.roleIds),
       });
     }
 
@@ -174,5 +174,47 @@ export class UserService {
     } else {
       throw new ForbiddenException('删除失败，该用户不存在或者无法删除');
     }
+  }
+
+  /**
+   * @description: 验证用户当前操作是否有权限
+   * @param {number} userId 用户id
+   * @param {string} permissionList 权限列表
+   * @return 验证结果
+   */
+  async verfiyAutorify(userId: number, permissionList: string[]) {
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.roles', 'role', 'role.status = :status', { status: true })
+      .leftJoinAndSelect('role.permissions', 'permission')
+      .where('user.id = :id', { id: userId })
+      .getOne();
+
+    // 判断用户是否存在
+    if (!user) {
+      throw new BadRequestException('用户不存在');
+    }
+
+    // 判断用户是否被禁用
+    if (!user.status) {
+      throw new BadRequestException('用户已经被禁用');
+    }
+
+    console.log(user);
+
+    const roleIds = user.roles.map((itme) => itme.id);
+    if (!roleIds.length) {
+      throw new ForbiddenException('无权访问');
+    }
+
+    const permissions = user.roles.flatMap((role) => role.permissions);
+    const permissionNames = permissions.map((item) => item.permName);
+
+    const isPermission = permissionList.every((item) => permissionNames.includes(item));
+    if (!isPermission) {
+      throw new ForbiddenException('权限不足');
+    }
+
+    return true;
   }
 }

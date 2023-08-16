@@ -1,14 +1,18 @@
 import { ForbiddenException, BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Roles } from '@/entities/roles.entity';
 import { User } from '@/entities/user.entity';
+import { Permission } from '@/entities/permission.entity';
 import { RolesDto } from './dto/roles.dto';
 import { GetRolesListDto } from './dto/getRolesList.dto';
 
 @Injectable()
 export class RolesService {
-  constructor(@InjectRepository(Roles) private readonly rolesRepository: Repository<Roles>) {}
+  constructor(
+    @InjectRepository(Roles) private readonly rolesRepository: Repository<Roles>,
+    @InjectRepository(Permission) private readonly permissionRepository: Repository<Permission>
+  ) {}
 
   /**
    * @description: 创建新角色
@@ -34,7 +38,16 @@ export class RolesService {
       throw new BadRequestException('角色已存在');
     }
 
-    const roles = await this.rolesRepository.create(createRolesDto);
+    // 创建角色
+    const roles = this.rolesRepository.create(createRolesDto);
+
+    // 判断角色权限是否存在
+    if (createRolesDto.permissionIds) {
+      roles.permissions = await this.permissionRepository.findBy({
+        id: In(createRolesDto.permissionIds),
+      });
+    }
+
     return this.rolesRepository.save(roles);
   }
 

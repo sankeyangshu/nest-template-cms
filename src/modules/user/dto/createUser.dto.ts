@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  ArrayNotEmpty,
+  IsArray,
   IsBoolean,
   IsEmail,
   IsIn,
@@ -66,8 +68,8 @@ export class CreateUserDto {
   @IsOptional()
   description: string;
 
-  @ApiProperty({ description: '用户角色' })
-  @IsString()
-  @IsOptional()
-  roleIds: string;
+  @ApiProperty({ description: '用户角色', example: [1, 2, 3], type: [Number] })
+  @IsArray()
+  @ArrayNotEmpty({ message: '用户角色不能为空' })
+  roleIds: number[];
 }

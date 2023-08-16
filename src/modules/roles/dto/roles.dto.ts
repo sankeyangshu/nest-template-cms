@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  ArrayNotEmpty,
+  IsArray,
+  IsBoolean,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class RolesDto {
   @ApiProperty({ description: '角色id', required: false })
@@ -31,4 +39,9 @@ export class RolesDto {
   @IsNumber()
   @IsOptional()
   sort: number;
+
+  @ApiProperty({ description: '权限id', type: [Number] })
+  @IsArray()
+  @ArrayNotEmpty({ message: '权限id不能为空' })
+  permissionIds: number[];
 }
