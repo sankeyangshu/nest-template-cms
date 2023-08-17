@@ -1,7 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Delete, Query, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Delete,
+  Query,
+  ParseIntPipe,
+  Req,
+} from '@nestjs/common';
 import { ResourcesService } from './resources.service';
 import { ResourcesDto } from './dto/resources.dto';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
+import { User } from '@/entities/user.entity';
 
 @Controller('resources')
 @ApiBearerAuth()
@@ -20,6 +32,12 @@ export class ResourcesController {
   @ApiOperation({ summary: '获取所有资源信息' })
   findAll() {
     return this.resourcesService.findAll();
+  }
+
+  @Get('getUserMenu')
+  @ApiOperation({ summary: '获取用户资源信息' })
+  findUserMenu(@Req() req: Request) {
+    return this.resourcesService.findUserMenu(req['user'] as User);
   }
 
   @Get('get')

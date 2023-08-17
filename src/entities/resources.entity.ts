@@ -29,7 +29,7 @@ export class Resources {
   })
   authType: number;
 
-  @Column({ comment: '上级id' })
+  @Column({ comment: '上级id', nullable: true })
   pid: number;
 
   @Column({ type: 'boolean', default: true, unique: false, comment: '资源状态' })

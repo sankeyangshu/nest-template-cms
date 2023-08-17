@@ -9,10 +9,12 @@ export class ResourcesDto {
 
   @ApiProperty({ description: '资源名称', required: true })
   @IsString()
+  @IsNotEmpty({ message: '资源名称不能为空' })
   title: string;
 
   @ApiProperty({ description: '资源唯一标记', required: true })
   @IsString()
+  @IsNotEmpty({ message: '资源唯一标记不能为空' })
   signName: string;
 
   @ApiProperty({ description: '资源地址', required: true })
@@ -39,5 +41,6 @@ export class ResourcesDto {
     required: true,
   })
   @IsIn([1, 2])
+  @IsNotEmpty({ message: '资源类型不能为空' })
   authType: number;
 }

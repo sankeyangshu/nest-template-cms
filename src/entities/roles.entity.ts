@@ -47,5 +47,8 @@ export class Roles {
   permissions: Permission[];
 
   @ManyToMany(() => Resources, (resources) => resources.roles)
+  @JoinTable({
+    name: 'roles_resources',
+  })
   resources: Resources[];
 }

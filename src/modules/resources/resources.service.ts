@@ -3,11 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Resources } from '@/entities/resources.entity';
 import { Repository } from 'typeorm';
 import { ResourcesDto } from './dto/resources.dto';
+import { User } from '@/entities/user.entity';
+import { menuConvertToTree } from '@/utils';
 
 @Injectable()
 export class ResourcesService {
   constructor(
-    @InjectRepository(Resources) private readonly resourcesRepository: Repository<Resources>
+    @InjectRepository(Resources) private readonly resourcesRepository: Repository<Resources>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>
   ) {}
 
   /**
@@ -16,7 +19,7 @@ export class ResourcesService {
    * @return 创建结果
    */
   async create(createResourcesDto: ResourcesDto) {
-    const resources = await this.resourcesRepository.create(createResourcesDto);
+    const resources = this.resourcesRepository.create(createResourcesDto);
     return this.resourcesRepository.save(resources);
   }
 
@@ -26,6 +29,30 @@ export class ResourcesService {
    */
   findAll() {
     return this.resourcesRepository.find({ order: { sort: 'ASC' } });
+  }
+
+  /**
+   * @description: 获取用户菜单
+   * @param {User} user 用户信息
+   * @return 用户菜单列表
+   */
+  async findUserMenu(user: User) {
+    const userMenuList = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.roles', 'role')
+      .leftJoinAndSelect('role.resources', 'resource')
+      .where('user.id = :id', { id: user.id })
+      .orderBy('resource.sort', 'ASC')
+      .getOne();
+
+    const menus = userMenuList?.roles.reduce((mergedMenus, role) => {
+      role.resources.forEach((menu) => {
+        mergedMenus[menu.id] = menu;
+      });
+      return mergedMenus;
+    }, {});
+
+    return menuConvertToTree(Object.values(menus));
   }
 
   /**
