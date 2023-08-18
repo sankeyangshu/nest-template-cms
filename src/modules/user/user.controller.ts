@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, ParseIntPipe, Patch, Post, Query, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
+  Req,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/createUser.dto';
 import { GetUserDto } from './dto/getUser.dto';
@@ -17,6 +27,18 @@ export class UserController {
   @ApiOperation({ summary: '获取所有用户信息' })
   getUsers(@Body() query: GetUserDto) {
     return this.userService.findAll(query);
+  }
+
+  @Get('getUserRoles')
+  @ApiQuery({
+    name: 'id',
+    description: '要获取用户角色信息的用户id',
+    required: true,
+    type: 'number',
+  })
+  @ApiOperation({ summary: '获取用户角色信息' })
+  getUserRoleList(@Query('id', ParseIntPipe) id: number) {
+    return this.userService.getUserRoles(id);
   }
 
   @Post('create')

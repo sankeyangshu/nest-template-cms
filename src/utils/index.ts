@@ -4,7 +4,7 @@ import * as path from 'path';
 /**
  * 菜单列表类型
  */
-type menuListType = Resources & { children: menuListType[] };
+type menuListType = Resources & { children?: menuListType[] };
 
 /**
  * @description: 获取文件夹所对应的路径

@@ -22,8 +22,8 @@ export class Roles {
   @Column({ comment: '角色描述', nullable: true })
   description: string;
 
-  @Column({ comment: '角色类型', default: 1, nullable: false })
-  roleType: number;
+  @Column({ comment: '角色唯一标记', unique: true, nullable: false })
+  roleType: string;
 
   @Column({ type: 'boolean', default: true, unique: false, comment: '角色状态' })
   status: boolean;

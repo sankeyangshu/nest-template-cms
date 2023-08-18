@@ -25,10 +25,10 @@ export class RolesDto {
   @IsOptional()
   description: string;
 
-  @ApiProperty({ description: '角色类型', default: 1 })
-  @IsNumber()
-  @IsOptional()
-  roleType: number;
+  @ApiProperty({ description: '角色唯一标记', required: true })
+  @IsString()
+  @IsNotEmpty({ message: '角色唯一标记不能为空' })
+  roleType: string;
 
   @ApiProperty({ description: '角色状态' })
   @IsBoolean()

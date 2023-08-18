@@ -27,8 +27,9 @@ export class ResourcesService {
    * @description: 查询全部资源
    * @return 全部资源列表
    */
-  findAll() {
-    return this.resourcesRepository.find({ order: { sort: 'ASC' } });
+  async findAll() {
+    const resources = await this.resourcesRepository.find({ order: { sort: 'ASC' } });
+    return menuConvertToTree(resources);
   }
 
   /**
