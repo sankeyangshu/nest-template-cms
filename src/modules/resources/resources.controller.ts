@@ -1,19 +1,7 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Delete,
-  Query,
-  ParseIntPipe,
-  Req,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Delete, Query, ParseIntPipe } from '@nestjs/common';
 import { ResourcesService } from './resources.service';
 import { ResourcesDto } from './dto/resources.dto';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { Request } from 'express';
-import { User } from '@/entities/user.entity';
 
 @Controller('resources')
 @ApiBearerAuth()
@@ -29,15 +17,17 @@ export class ResourcesController {
   }
 
   @Get('getAll')
+  @ApiQuery({ name: 'title', description: '资源名称', type: 'string' })
   @ApiOperation({ summary: '获取所有资源信息' })
-  findAll() {
-    return this.resourcesService.findAll();
+  findAll(@Query('title') title?: string) {
+    return this.resourcesService.findAll(title);
   }
 
   @Get('getUserMenu')
+  @ApiQuery({ name: 'userID', description: '要查询的用户id', required: true, type: 'number' })
   @ApiOperation({ summary: '获取用户资源信息' })
-  findUserMenu(@Req() req: Request) {
-    return this.resourcesService.findUserMenu(req['user'] as User);
+  findUserMenu(@Query('userID', ParseIntPipe) userID: number) {
+    return this.resourcesService.findUserMenu(userID);
   }
 
   @Get('get')

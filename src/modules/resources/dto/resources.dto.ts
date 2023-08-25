@@ -18,8 +18,14 @@ export class ResourcesDto {
   signName: string;
 
   @ApiProperty({ description: '资源地址', required: true })
-  @IsNotEmpty({ message: '资源地址不能为空' })
+  @IsString()
+  @IsOptional()
   url: string;
+
+  @ApiProperty({ description: '图标' })
+  @IsString()
+  @IsOptional()
+  icon: string;
 
   @ApiProperty({ description: '资源上级id' })
   @IsNumber()
@@ -40,7 +46,7 @@ export class ResourcesDto {
     description: '资源类型：1是菜单(与前端关联),2是api接口(与后端关联)',
     required: true,
   })
-  @IsIn([1, 2])
+  @IsIn([1, 2, 3])
   @IsNotEmpty({ message: '资源类型不能为空' })
   authType: number;
 }
