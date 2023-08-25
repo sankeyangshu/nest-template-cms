@@ -202,7 +202,7 @@ export const isUrl = (path: string): boolean => {
  * @param {T} val 值
  * @return 判断结果
  */
-export const isEmpty = <T = unknown>(val: T): val is T => {
+export const isEmpty = (val: unknown) => {
   if (isArray(val) || isString(val)) {
     return val.length === 0;
   }

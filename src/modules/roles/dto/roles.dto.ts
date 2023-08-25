@@ -40,8 +40,8 @@ export class RolesDto {
   @IsOptional()
   sort: number;
 
-  @ApiProperty({ description: '权限id', type: [Number] })
+  @ApiProperty({ description: '资源id', type: [Number] })
   @IsArray()
-  @ArrayNotEmpty({ message: '权限id不能为空' })
-  permissionIds: number[];
+  @ArrayNotEmpty({ message: '资源id不能为空' })
+  resourceIds: number[];
 }

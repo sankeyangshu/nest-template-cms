@@ -26,4 +26,9 @@ export class GetRolesListDto {
   @IsNumber()
   @IsOptional()
   pageSize: number;
+
+  @ApiProperty({ description: '是否不需要分页', required: false, default: false })
+  @IsBoolean()
+  @IsOptional()
+  isNotPage: boolean;
 }

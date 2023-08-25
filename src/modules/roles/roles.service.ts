@@ -3,15 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { Roles } from '@/entities/roles.entity';
 import { User } from '@/entities/user.entity';
-import { Permission } from '@/entities/permission.entity';
+import { Resources } from '@/entities/resources.entity';
 import { RolesDto } from './dto/roles.dto';
 import { GetRolesListDto } from './dto/getRolesList.dto';
+import { menuConvertToTree } from '@/utils';
 
 @Injectable()
 export class RolesService {
   constructor(
     @InjectRepository(Roles) private readonly rolesRepository: Repository<Roles>,
-    @InjectRepository(Permission) private readonly permissionRepository: Repository<Permission>
+    @InjectRepository(Resources) private readonly resourcesRepository: Repository<Resources>
   ) {}
 
   /**
@@ -30,7 +31,7 @@ export class RolesService {
     // 判断要创建的角色是否存在
     const createRole = await this.rolesRepository.findOne({
       where: {
-        roleName: createRolesDto.roleName,
+        roleType: createRolesDto.roleType,
       },
     });
     if (createRole) {
@@ -41,10 +42,10 @@ export class RolesService {
     // 创建角色
     const roles = this.rolesRepository.create(createRolesDto);
 
-    // 判断角色权限是否存在
-    if (createRolesDto.permissionIds) {
-      roles.permissions = await this.permissionRepository.findBy({
-        id: In(createRolesDto.permissionIds),
+    // 判断角色资源是否存在
+    if (createRolesDto.resourceIds) {
+      roles.resources = await this.resourcesRepository.findBy({
+        id: In(createRolesDto.resourceIds),
       });
     }
 
@@ -57,6 +58,11 @@ export class RolesService {
    * @return 全部角色列表
    */
   async findAll(query: GetRolesListDto) {
+    // 判断是否需要分页
+    if (query.isNotPage) {
+      return this.rolesRepository.find();
+    }
+
     // page - 页码，limit - 每页条数，condition-查询条件(username, role, sex)，sort-排序
     const { pageNum = 1, pageSize = 10 } = query;
     const take = pageSize; // 条数
@@ -81,6 +87,27 @@ export class RolesService {
         id,
       },
     });
+  }
+
+  /**
+   * @description: 获取角色菜单列表
+   * @param {number} roleID 角色id
+   * @return 角色菜单列表
+   */
+  async findRoleResources(roleID: number) {
+    const roleMenuList = await this.rolesRepository
+      .createQueryBuilder('role')
+      .leftJoinAndSelect('role.resources', 'resource')
+      .where('role.id = :id', { id: roleID })
+      .orderBy('resource.sort', 'ASC')
+      .getOne();
+
+    const menus = roleMenuList?.resources.reduce((mergedMenus, resource) => {
+      mergedMenus[resource.id] = resource;
+      return mergedMenus;
+    }, {});
+
+    return menuConvertToTree(Object.values(menus));
   }
 
   /**

@@ -1,4 +1,14 @@
-import { Controller, Post, Body, Patch, Delete, Query, ParseIntPipe, Req } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Patch,
+  Delete,
+  Query,
+  ParseIntPipe,
+  Req,
+  Get,
+} from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { RolesDto } from './dto/roles.dto';
 import { GetRolesListDto } from './dto/getRolesList.dto';
@@ -22,12 +32,19 @@ export class RolesController {
 
   @Post('getAll')
   @ApiOperation({ summary: '获取所有角色信息' })
-  getRoles(@Query() query: GetRolesListDto) {
+  getRoles(@Body() query: GetRolesListDto) {
     // 判断是查询单个角色还是查询全部角色
     if (query.id) {
       return this.rolesService.findOne(query.id);
     }
     return this.rolesService.findAll(query);
+  }
+
+  @Get('getRoleMenu')
+  @ApiQuery({ name: 'roleID', description: '角色id', required: true, type: 'number' })
+  @ApiOperation({ summary: '获取角色菜单列表' })
+  getRoleMenu(@Query('roleID', ParseIntPipe) roleID: number) {
+    return this.rolesService.findRoleResources(roleID);
   }
 
   @Patch('update')
