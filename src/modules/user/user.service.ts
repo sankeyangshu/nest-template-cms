@@ -76,7 +76,9 @@ export class UserService {
       'user.username': username,
     };
 
-    const queryBuilder = this.userRepository.createQueryBuilder('user');
+    const queryBuilder = this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.roles', 'role');
     const newQueryBuilder = conditionUtils<User>(queryBuilder, obj);
 
     // return this.userRepository.find({
@@ -185,7 +187,7 @@ export class UserService {
     const user = await this.userRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.roles', 'role', 'role.status = :status', { status: true })
-      .leftJoinAndSelect('role.permissions', 'permission')
+      .leftJoinAndSelect('role.resources', 'resource')
       .where('user.id = :id', { id })
       .getOne();
 
@@ -199,12 +201,13 @@ export class UserService {
       throw new BadRequestException('用户已经被禁用');
     }
 
-    const roleIds = user.roles.map((itme) => itme.id);
-    if (!roleIds.length) {
+    const roles = user.roles;
+    const menus = user.roles.flatMap((role) => role.resources);
+    if (!roles.length) {
       throw new ForbiddenException('非法用户，无法访问');
     }
 
-    return roleIds;
+    return { roles, menus };
   }
 
   /**
