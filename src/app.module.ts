@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { LoggerModule } from './logger/logger.module';
-import { UserModule } from './modules/user/user.module';
-import { AuthModule } from './modules/auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigEnum } from './enum/config.enum';
-import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt.guard';
 import { PermissionGuard } from './guards/permission.guard';
-import { RolesModule } from './modules/roles/roles.module';
-import { ResourcesModule } from './modules/resources/resources.module';
+import { LoggerModule } from './logger/logger.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { LoggersModule } from './modules/loggers/loggers.module';
 import { PermissionModule } from './modules/permission/permission.module';
+import { ResourcesModule } from './modules/resources/resources.module';
+import { RolesModule } from './modules/roles/roles.module';
+import { UserModule } from './modules/user/user.module';
 import AppConfig from './config';
 
 @Module({

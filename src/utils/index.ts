@@ -1,5 +1,5 @@
-import { Resources } from '@/entities/resources.entity';
 import * as path from 'path';
+import { Resources } from '@/entities/resources.entity';
 
 /**
  * 菜单列表类型

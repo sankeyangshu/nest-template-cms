@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Delete, Query, ParseIntPipe } from '@nestjs/common';
-import { ResourcesService } from './resources.service';
-import { ResourcesDto } from './dto/resources.dto';
+import { Body, Controller, Delete, Get, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ResourcesDto } from './dto/resources.dto';
+import { ResourcesService } from './resources.service';
 
 @Controller('resources')
 @ApiBearerAuth()

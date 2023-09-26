@@ -1,12 +1,12 @@
-import { ForbiddenException, BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
+import { Resources } from '@/entities/resources.entity';
 import { Roles } from '@/entities/roles.entity';
 import { User } from '@/entities/user.entity';
-import { Resources } from '@/entities/resources.entity';
-import { RolesDto } from './dto/roles.dto';
-import { GetRolesListDto } from './dto/getRolesList.dto';
 import { menuConvertToTree } from '@/utils';
+import { GetRolesListDto } from './dto/getRolesList.dto';
+import { RolesDto } from './dto/roles.dto';
 
 @Injectable()
 export class RolesService {

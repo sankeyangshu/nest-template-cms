@@ -1,12 +1,12 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { AppLoggerService } from './logger/logger.service';
-import { setupSwagger } from './swagger';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import * as Config from 'config';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
-import { ValidationPipe } from '@nestjs/common';
 import { ResponseInterceptor } from './interceptors/response.interceptor';
+import { AppLoggerService } from './logger/logger.service';
+import { AppModule } from './app.module';
+import { setupSwagger } from './swagger';
 
 // 获取本地服务配置
 const config = Config.get('server');

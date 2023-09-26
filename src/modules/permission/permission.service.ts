@@ -1,8 +1,8 @@
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
-import { PermissionDto } from './dto/permission.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Permission } from '@/entities/permission.entity';
+import { PermissionDto } from './dto/permission.dto';
 
 @Injectable()
 export class PermissionService {

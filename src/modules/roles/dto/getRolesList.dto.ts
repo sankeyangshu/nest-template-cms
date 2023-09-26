@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNumber, IsOptional, IsString, IsNumberString } from 'class-validator';
+import { IsBoolean, IsNumber, IsNumberString, IsOptional, IsString } from 'class-validator';
 
 export class GetRolesListDto {
   @ApiProperty({ description: '角色id', required: false })

@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Resources } from '@/entities/resources.entity';
 import { Repository } from 'typeorm';
-import { ResourcesDto } from './dto/resources.dto';
+import { Resources } from '@/entities/resources.entity';
 import { User } from '@/entities/user.entity';
 import { menuConvertToTree } from '@/utils';
 import { isEmpty } from '@/utils/is';
+import { ResourcesDto } from './dto/resources.dto';
 
 @Injectable()
 export class ResourcesService {

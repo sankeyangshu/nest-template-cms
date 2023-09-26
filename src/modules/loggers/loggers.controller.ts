@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Delete, Query, ParseIntPipe } from '@nestjs/common';
-import { ApiTags, ApiBearerAuth, ApiBody, ApiOperation, ApiQuery } from '@nestjs/swagger';
-import { LoggersService } from './loggers.service';
+import { Body, Controller, Delete, Get, ParseIntPipe, Post, Query } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreateLoggerDto } from './dto/createLogger.dto';
+import { LoggersService } from './loggers.service';
 
 @Controller('loggers')
 @ApiBearerAuth()

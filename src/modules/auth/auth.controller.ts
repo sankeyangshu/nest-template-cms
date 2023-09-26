@@ -1,8 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { NoAuth } from '@/decorators/noAuth.decorator';
 import { AuthUserDto } from './dto/auth.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthService } from './auth.service';
 
 @Controller('auth')
 @ApiTags('登录注册模块')

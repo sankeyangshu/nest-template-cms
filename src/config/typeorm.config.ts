@@ -1,7 +1,7 @@
 import { registerAs } from '@nestjs/config';
-import { resolve } from '@/utils';
-import { ConfigEnum } from '@/enum/config.enum';
 import * as config from 'config';
+import { ConfigEnum } from '@/enum/config.enum';
+import { resolve } from '@/utils';
 
 // 获取数据库配置
 const dbConfig = config.get('db');

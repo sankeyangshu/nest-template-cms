@@ -1,15 +1,15 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  ManyToMany,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
   JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { User } from './user.entity';
-import { Resources } from './resources.entity';
 import { Permission } from './permission.entity';
+import { Resources } from './resources.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class Roles {

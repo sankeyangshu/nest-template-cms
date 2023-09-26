@@ -9,13 +9,13 @@ import {
   Query,
   Req,
 } from '@nestjs/common';
-import { UserService } from './user.service';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
+import { User } from '@/entities/user.entity';
 import { CreateUserDto } from './dto/createUser.dto';
 import { GetUserDto } from './dto/getUser.dto';
 import { UpdateUserDto } from './dto/updateUser.dto';
-import { Request } from 'express';
-import { User } from '@/entities/user.entity';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { UserService } from './user.service';
 
 @Controller('user')
 @ApiBearerAuth()

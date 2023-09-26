@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Delete, Query, ParseIntPipe } from '@nestjs/common';
-import { PermissionService } from './permission.service';
-import { PermissionDto } from './dto/permission.dto';
+import { Body, Controller, Delete, Get, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { PermissionDto } from './dto/permission.dto';
+import { PermissionService } from './permission.service';
 
 @Controller('permission')
 @ApiBearerAuth()

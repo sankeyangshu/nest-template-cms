@@ -1,20 +1,20 @@
 import {
-  Controller,
-  Post,
   Body,
-  Patch,
+  Controller,
   Delete,
-  Query,
-  ParseIntPipe,
-  Req,
   Get,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
+  Req,
 } from '@nestjs/common';
-import { RolesService } from './roles.service';
-import { RolesDto } from './dto/roles.dto';
-import { GetRolesListDto } from './dto/getRolesList.dto';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { User } from '@/entities/user.entity';
+import { GetRolesListDto } from './dto/getRolesList.dto';
+import { RolesDto } from './dto/roles.dto';
+import { RolesService } from './roles.service';
 
 @Controller('roles')
 @ApiBearerAuth()

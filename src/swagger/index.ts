@@ -2,7 +2,7 @@
  * swagger配置文件
  */
 import type { NestExpressApplication } from '@nestjs/platform-express';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 /**
  * @description: 设置swagger
